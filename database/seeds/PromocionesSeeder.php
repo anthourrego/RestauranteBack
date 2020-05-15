@@ -12,7 +12,6 @@ class PromocionesSeeder extends Seeder
   public function run()
   {
     DB::table('promociones')->insert([
-      'id' => 0,
       'descripcion' => 'N/A',
       'imagen' => 'N/A',
       'estado' => 1,

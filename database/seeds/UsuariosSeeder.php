@@ -12,7 +12,7 @@ class UsuariosSeeder extends Seeder
   public function run()
   {
     DB::table('usuarios')->insert([
-      'id' => 0,
+      'id' => 1,
       'nro_documento' => "0000",
       'correo' => 'admin@admin.com',
       'nombres' => 'admin',

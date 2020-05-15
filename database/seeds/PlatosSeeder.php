@@ -12,7 +12,6 @@ class PlatosSeeder extends Seeder
   public function run()
   {
     DB::table('platos')->insert([
-      'id' => 0,
       'nombre' => 'N/A',
       'descripcion' => 'N/A',
       'imagen' => 'N/A',

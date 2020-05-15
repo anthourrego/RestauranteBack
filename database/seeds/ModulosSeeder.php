@@ -11,7 +11,7 @@ class ModulosSeeder extends Seeder
    */
   public function run()
   {
-    DB::table('modulo_tipos')->insert([
+    DB::table('modulos')->insert([
       'nombre' => "usuarios",
       'tag' => 'Usuarios',
       'icono' => 'fas fa-users',
@@ -23,7 +23,7 @@ class ModulosSeeder extends Seeder
       'created_at' => date('Y-m-d H:m:s'),
       'updated_at' => date('Y-m-d H:m:s'),
     ]);
-    DB::table('modulo_tipos')->insert([
+    DB::table('modulos')->insert([
       'nombre' => "modulos",
       'tag' => 'Modulos',
       'icono' => 'fab fa-modx',

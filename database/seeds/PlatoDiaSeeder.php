@@ -12,8 +12,7 @@ class PlatoDiaSeeder extends Seeder
   public function run()
   {
     DB::table('plato_dias')->insert([
-      'id' => 0,
-      'fk_plato' => 0,
+      'fk_plato' => 1,
       'descripcion' => 'N/A',
       'precio' => 0,
       'fecha_aplicacion' => date('Y-m-d'),
