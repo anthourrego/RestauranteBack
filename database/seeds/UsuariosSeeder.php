@@ -19,7 +19,7 @@ class UsuariosSeeder extends Seeder
       'apellidos' => 'admin',
       'direccion' => 'sistema',
       'telefono' => '0000',
-      'password' => '0000',
+      'password' => '$2y$15$Pbu7Qq9uCceP7wAJ/ZGW3uaJklO89Xk5.ZzKeFfJ63NPdUvbPzxaO',
       'fk_perfil' => 1,
       'estado' => 1,
       'fk_creador' => 1,

@@ -4,82 +4,51 @@ namespace App\Http\Controllers;
 
 use App\Modulos;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ModulosController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+  public function listaModulosUsuario($idUsuario){
+    $modulos = DB::table('usuarios_modulos')
+          ->join('modulos', 'usuarios_modulos.fk_modulo', '=', 'modulos.id')
+          ->select('modulos.*')
+          ->where([
+            ['usuarios_modulos.fk_usuario', $idUsuario],
+            ['usuarios_modulos.estado', 1],
+            ['modulos.estado', 1]
+          ])->get();
+
+    if (!empty($modulos)) {
+      $resp["success"] = true;
+      $resp['msj'] = $modulos;
+    }else{
+      $resp["success"] = false;
+      $resp['msj'] = "No hay datos";
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    return $resp;
+  }
+
+  public function validarPermiso($idUsuario, $modulo){
+    
+    $permiso = DB::table('usuarios_modulos')
+              ->join('modulos', 'usuarios_modulos.fk_modulo', '=', 'modulos.id')
+              ->select('modulos.*')
+              ->where([
+                ['usuarios_modulos.fk_usuario', $idUsuario],
+                ['usuarios_modulos.estado', 1],
+                ['modulos.estado', 1],
+                ['modulos.nombre', $modulo]
+              ])->get();
+    
+    if (!$permiso->isEmpty()) {
+      $resp["success"] = true;
+      $resp['msj'] = 'Tienes acceso';
+    }else{
+      $resp["success"] = false;
+      $resp['msj'] = "No hay datos";
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Modulos  $modulos
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Modulos $modulos)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Modulos  $modulos
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Modulos $modulos)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Modulos  $modulos
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Modulos $modulos)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Modulos  $modulos
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Modulos $modulos)
-    {
-        //
-    }
+    return $resp;
+  }
 }

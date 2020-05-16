@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\UsuariosModulos;
 use Illuminate\Http\Request;
 
+
 class UsuariosModulosController extends Controller
 {
     /**
