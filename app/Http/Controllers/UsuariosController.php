@@ -138,4 +138,35 @@ class UsuariosController extends Controller
     
     return $resp;
   }
+
+  public function crearUsuario(Request $request){
+    $validar = Usuarios::where('nro_documento', $request->documento)->get();
+        
+    if($validar->isEmpty()){
+      $usuario = new Usuarios;
+      $usuario->nro_documento = $request->documento;
+      $usuario->correo = $request->correo;
+      $usuario->nombres = $request->nombres;
+      $usuario->apellidos = $request->apellidos;
+      $usuario->direccion = $request->direccion;
+      $usuario->telefono = $request->telefono;
+      $usuario->password = Hash::make($request->password, ['rounds' => 15]);
+      $usuario->fk_perfil = $request->perfil;
+      $usuario->estado = 1;
+      $usuario->fk_creador = 1;
+      
+      if($usuario->save()){
+        $resp["success"] = true;
+        $resp["msj"] = "Se ha creado el usuario";
+      }else{
+        $resp["success"] = false;
+        $resp["msj"] = "No se ha creado el usuario";
+      }
+    }else{
+      $resp["success"] = false;
+      $resp["msj"] = "El número de documento ya se encuentra registrado";
+    }
+
+    return $resp;
+  }
 }
