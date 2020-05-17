@@ -39,4 +39,9 @@ Route::middleware('token')->group(function () {
   
   //Validar permisos
   Route::get('permisos/validar/{idUsuario}/{modulo}', 'ModulosController@validarPermiso');
+
+  //Platos
+  Route::post('platos/guardar', 'PlatosController@store');
+  Route::get('platos/lista', 'PlatosController@show');
+
 });
