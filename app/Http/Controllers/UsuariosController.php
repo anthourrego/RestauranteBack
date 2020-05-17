@@ -6,8 +6,10 @@ use App\Usuarios;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Helpers\JwtLogin;
+use App\Helpers\SSP;
 use Illuminate\Support\Collection as Collection;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 class UsuariosController extends Controller
 {
@@ -17,81 +19,6 @@ class UsuariosController extends Controller
   public function __construct()
   {
       $this->middleware('cors');
-  }
-  /**
-   * Display a listing of the resource.
-   *
-   * @return \Illuminate\Http\Response
-   */
-  public function index()
-  {
-      //
-  }
-
-  /**
-   * Show the form for creating a new resource.
-   *
-   * @return \Illuminate\Http\Response
-   */
-  public function create()
-  {
-      //
-  }
-
-  /**
-   * Store a newly created resource in storage.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @return \Illuminate\Http\Response
-   */
-  public function store(Request $request)
-  {
-      //
-  }
-
-  /**
-   * Display the specified resource.
-   *
-   * @param  \App\Usuarios  $usuarios
-   * @return \Illuminate\Http\Response
-   */
-  public function show(Usuarios $usuarios)
-  {
-      //
-  }
-
-  /**
-   * Show the form for editing the specified resource.
-   *
-   * @param  \App\Usuarios  $usuarios
-   * @return \Illuminate\Http\Response
-   */
-  public function edit(Usuarios $usuarios)
-  {
-      //
-  }
-
-  /**
-   * Update the specified resource in storage.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @param  \App\Usuarios  $usuarios
-   * @return \Illuminate\Http\Response
-   */
-  public function update(Request $request, Usuarios $usuarios)
-  {
-      //
-  }
-
-  /**
-   * Remove the specified resource from storage.
-   *
-   * @param  \App\Usuarios  $usuarios
-   * @return \Illuminate\Http\Response
-   */
-  public function destroy(Usuarios $usuarios)
-  {
-      //
   }
 
   public function registrarse(Request $request)
@@ -160,11 +87,11 @@ class UsuariosController extends Controller
     if(!is_null($usuario)){
       if ($request->telefono != $usuario->telefono || $request->nombres != $usuario->nombres || $request->apellidos != $usuario->apellidos || $request->correo != $usuario->correo || $request->direccion != $usuario->direccion) {
         
-        $usuario{'telefono'} = $request->telefono;
-        $usuario{'nombres'} = $request->nombres;
-        $usuario{'apellidos'} = $request->apellidos;
-        $usuario{'correo'} = $request->correo; 
-        $usuario{'direccion'} = $request->direccion; 
+        $usuario->telefono = $request->telefono;
+        $usuario->nombres = $request->nombres;
+        $usuario->apellidos = $request->apellidos;
+        $usuario->correo = $request->correo; 
+        $usuario->direccion = $request->direccion; 
         
         if ($usuario->save()) {
           $resp["success"] = true;
@@ -191,5 +118,24 @@ class UsuariosController extends Controller
             'success' => true,
             'msj' => 'Token valido'
           );
+  }
+
+  public function listaUsuarios(){
+    $usuarios = DB::table('usuarios AS u1')
+              ->join('usuarios AS u2', 'u1.fk_creador', '=', 'u2.id')
+              ->join('perfiles', 'u1.fk_perfil', '=', 'perfiles.id')
+              ->select('u1.*', 'u2.nombres AS creador', 'perfiles.nombre AS perfil')
+              ->where('u1.estado', 1)
+              ->get();
+
+    if (!$usuarios->isEmpty()) {
+      $resp["success"] = true;
+      $resp["msj"] = $usuarios;
+    }else{
+      $resp["success"] = false;
+      $resp["msj"] = "No hay datos";
+    }
+    
+    return $resp;
   }
 }

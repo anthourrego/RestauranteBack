@@ -32,10 +32,11 @@ Route::middleware('token')->group(function () {
   
   //Usuarios
   Route::put('actualizarDatos', 'UsuariosController@actualizarDatos');
+  Route::get('usuarios/lista', 'UsuariosController@listaUsuarios');
   
   //Modulos
   Route::get('listaModulosUsuario/{idUsuario}', 'ModulosController@listaModulosUsuario');
   
   //Validar permisos
-  Route::get('validarPermiso/{idUsuario}/{modulo}', 'ModulosController@validarPermiso');
+  Route::get('permisos/validar/{idUsuario}/{modulo}', 'ModulosController@validarPermiso');
 });

@@ -46,7 +46,7 @@ class ModulosController extends Controller
       $resp['msj'] = 'Tienes acceso';
     }else{
       $resp["success"] = false;
-      $resp['msj'] = "No hay datos";
+      $resp['msj'] = "No tienes acceso";
     }
 
     return $resp;
