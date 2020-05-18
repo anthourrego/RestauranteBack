@@ -16,6 +16,7 @@ class PlatosSeeder extends Seeder
       'descripcion' => 'N/A',
       'imagen' => 'N/A',
       'estado' => 1,
+      'plato_dia' => 0,
       'precio' => 0,
       'fk_creador' => 1,
       'created_at' => date('Y-m-d H:m:s'),

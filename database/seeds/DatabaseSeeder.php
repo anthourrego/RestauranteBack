@@ -18,6 +18,5 @@ class DatabaseSeeder extends Seeder
     $this->call(UsuariosModulosSeeder::class);
     $this->call(PlatosSeeder::class);
     $this->call(PromocionesSeeder::class);
-    $this->call(PlatoDiaSeeder::class);
   }
 }

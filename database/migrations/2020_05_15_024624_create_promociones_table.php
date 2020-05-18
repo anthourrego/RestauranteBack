@@ -15,13 +15,14 @@ class CreatePromocionesTable extends Migration
     {
         Schema::create('promociones', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('fk_plato');
             $table->text('descripcion');
-            $table->text('imagen');
-            $table->integer('estado');
             $table->integer('precio');
+            $table->integer('estado');
             $table->unsignedBigInteger('fk_creador');
             $table->timestamps();
             
+            $table->foreign('fk_plato')->references('id')->on('platos');
             $table->foreign('fk_creador')->references('id')->on('usuarios');
         });
     }

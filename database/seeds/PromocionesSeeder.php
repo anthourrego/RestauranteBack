@@ -12,10 +12,10 @@ class PromocionesSeeder extends Seeder
   public function run()
   {
     DB::table('promociones')->insert([
+      'fk_plato' => 1,
       'descripcion' => 'N/A',
-      'imagen' => 'N/A',
-      'estado' => 1,
       'precio' => 0,
+      'estado' => 1,
       'fk_creador' => 1,
       'created_at' => date('Y-m-d H:m:s'),
       'updated_at' => date('Y-m-d H:m:s'),

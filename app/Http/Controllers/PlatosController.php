@@ -42,7 +42,8 @@ class PlatosController extends Controller
             $plato->nombre = $request->nombre;
             $plato->descripcion = $request->descripcion;
             $plato->imagen = '';
-            $plato->estado = $request->estado;
+            $plato->estado = 1;
+            $plato->plato_dia = 0;
             $plato->precio = $request->precio;
             $plato->fk_creador = $request->creador;
             if($plato->save()){
@@ -68,11 +69,11 @@ class PlatosController extends Controller
      */
     public function show(Platos $platos)
     {
-        $platos = DB::table('platos AS pl')
-              ->join('usuarios AS usu', 'pl.fk_creador', '=', 'usu.id')
-              ->select('pl.*', 'usu.nombres AS fk_creador', 'usu.apellidos AS apellidos')
-              ->where('pl.estado', 1)
-              ->get();
+        $platos = Platos::where([
+                            ['estado', 1],
+                            ['id', '!=', 1]
+                        ])->get();
+
         if (!$platos->isEmpty()) {
             $resp["success"] = true;
             $resp["msj"] = $platos;

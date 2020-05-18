@@ -19,6 +19,7 @@ class CreatePlatosTable extends Migration
             $table->text('descripcion');
             $table->text('imagen');
             $table->integer('estado');
+            $table->integer('plato_dia');
             $table->integer('precio');
             $table->unsignedBigInteger('fk_creador');
             $table->timestamps();

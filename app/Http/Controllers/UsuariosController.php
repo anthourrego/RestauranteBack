@@ -153,7 +153,7 @@ class UsuariosController extends Controller
       $usuario->password = Hash::make($request->password, ['rounds' => 15]);
       $usuario->fk_perfil = $request->perfil;
       $usuario->estado = 1;
-      $usuario->fk_creador = 1;
+      $usuario->fk_creador = $request->creador;
       
       if($usuario->save()){
         $resp["success"] = true;
@@ -168,5 +168,66 @@ class UsuariosController extends Controller
     }
 
     return $resp;
+  }
+
+  public function eliminarUsuario(Request $request){
+    $usuario = Usuarios::find($request->id);
+    
+    if(!is_null($usuario)){
+      $usuario->estado = 0;
+
+      if ($usuario->save()) {
+        $resp["success"] = true;
+        $resp["msj"] = "Se ha eliminado el usuario";
+      }else{
+        $resp["success"] = false;
+        $resp["msj"] = "No se han guardado cambios";
+      }
+    }else{
+      $resp["success"] = false;
+      $resp["msj"] = "No se ha encontrado el usuario";
+    }
+    return $resp; 
+  }
+
+  public function editarUsuario(Request $request){
+    $validar = Usuarios::where([
+              ['id', '<>', $request->id],
+              ['nro_documento', $request->documento]
+            ])->get();
+    
+    if ($validar->isEmpty()) {
+      $usuario = Usuarios::find($request->id);
+      if(!empty($usuario)){
+        if ($request->perfil != $usuario->fk_perfil || $request->documento != $usuario->nro_documento || $request->telefono != $usuario->telefono || $request->nombres != $usuario->nombres || $request->apellidos != $usuario->apellidos || $request->correo != $usuario->correo || $request->direccion != $usuario->direccion) {
+          
+          $usuario->nro_documento = $request->documento;
+          $usuario->fk_perfil = $request->perfil;
+          $usuario->telefono = $request->telefono;
+          $usuario->nombres = $request->nombres;
+          $usuario->apellidos = $request->apellidos;
+          $usuario->correo = $request->correo; 
+          $usuario->direccion = $request->direccion; 
+          
+          if ($usuario->save()) {
+            $resp["success"] = true;
+            $resp["msj"] = "Se han actualizado los datos";
+          }else{
+            $resp["success"] = false;
+            $resp["msj"] = "No se han guardado cambios";
+          }
+        } else {
+          $resp["success"] = false;
+          $resp["msj"] = "Por favor realice algún cambio";
+        }
+      }else{
+        $resp["success"] = false;
+        $resp["msj"] = "No se ha encontrado el usuario";
+      }
+    }else{
+      $resp["success"] = false;
+        $resp["msj"] = "El número de documento ya se encuentra registrado";
+    }
+    return $resp; 
   }
 }
