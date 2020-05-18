@@ -49,6 +49,7 @@ Route::middleware('token')->group(function () {
   Route::post('platos/guardar', 'PlatosController@store');
   Route::put('platos/eliminar', 'PlatosController@eliminar');
   Route::put('platos/dia', 'PlatosController@dia');
+  Route::post('platos/editar', 'PlatosController@update');
 
   //Promociones
   Route::post('promo/crear', 'PromocionesController@create');
