@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\DB;
 
 class ModulosController extends Controller
 {
+  public function __construct()
+  {
+      $this->middleware('cors');
+  }
+  
   public function listaModulosUsuario($idUsuario){
     $modulos = DB::table('usuarios_modulos')
           ->join('modulos', 'usuarios_modulos.fk_modulo', '=', 'modulos.id')

@@ -25,6 +25,8 @@ Route::middleware(['guest'])->group(function () {
   /* Route::get('validarToken/{tiempoToken}', 'UserController@validarToken');  */
   Route::get('login/{nroDoc}/{pass}', 'UsuariosController@inicioSesion');
   Route::post('registrarse', 'UsuariosController@registrarse');
+  Route::get('platos/lista', 'PlatosController@show');
+  Route::get('platos/dia', 'PlatosController@platosDia');
 });
 
 Route::middleware('token')->group(function () {
@@ -45,7 +47,10 @@ Route::middleware('token')->group(function () {
 
   //Platos
   Route::post('platos/guardar', 'PlatosController@store');
-  Route::get('platos/lista', 'PlatosController@show');
   Route::put('platos/eliminar', 'PlatosController@eliminar');
+  Route::put('platos/dia', 'PlatosController@dia');
+
+  //Promociones
+  Route::post('promo/crear', 'PromocionesController@create');
 
 });
