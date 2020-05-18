@@ -211,4 +211,46 @@ class PlatosController extends Controller
     }
     return $resp;
   }
+
+  public function imagen(Request $request){
+    $resp["success"] = false;
+
+    if(isset($_FILES['imagenPropia'])){
+      $info = pathinfo($_FILES['imagenPropia']['name']);
+      $ext = $info['extension'];
+      $imagen_tipo = $_FILES['imagenPropia']['type'];
+      $directorio_final = "../storage/app/public/" . $request->id . '.' . $ext; 
+  
+      if($imagen_tipo == "image/jpeg" || $imagen_tipo == "image/jpg" || $imagen_tipo == "image/png"){
+  
+        if(move_uploaded_file($_FILES['imagenPropia']['tmp_name'], $directorio_final)){
+          $plato = Platos::find($request->id);
+  
+          if(!is_null($plato)){
+
+            $plato->imagen = substr($directorio_final, 3);
+
+            if ($plato->save()) {
+              $resp["success"] = true;
+              $resp["msj"] = "Imagen subida";
+            }else{
+              $resp["success"] = false;
+              $resp["msj"] = "No se han guardado cambios";
+            }
+          }else{
+            $resp["success"] = false;
+            $resp["msj"] = "No se ha encontrado el plato";
+          }
+        }else{
+          $resp["msj"] = 'Error al mover imagen al servidor';
+        }
+      }else{
+        $resp["msj"] = 'Formato no soportado';
+      }
+    }else{
+      $resp["msj"] = 'No se recibio ninguna imagen';
+    }
+
+    return $resp;
+  }
 }

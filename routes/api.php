@@ -39,6 +39,8 @@ Route::middleware('token')->group(function () {
   Route::post('usuarios/crear', 'UsuariosController@crearUsuario');
   Route::put('usuarios/eliminar', 'UsuariosController@eliminarUsuario');
   Route::put('usuarios/editar', 'UsuariosController@editarUsuario');
+  Route::get('usuarios/lista/clientes', 'UsuariosController@clienteRegistrados');
+  Route::get('usuarios/lista/usuarios', 'UsuariosController@usuariosRegistrados');
   
   //Modulos
   Route::get('listaModulosUsuario/{idUsuario}', 'ModulosController@listaModulosUsuario');
@@ -51,6 +53,7 @@ Route::middleware('token')->group(function () {
   Route::put('platos/eliminar', 'PlatosController@eliminar');
   Route::put('platos/dia', 'PlatosController@dia');
   Route::post('platos/editar', 'PlatosController@update');
+  Route::post('platos/imagen', 'PlatosController@imagen');
 
   //Promociones
   Route::post('promo/crear', 'PromocionesController@create');

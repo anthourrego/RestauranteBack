@@ -29,7 +29,7 @@ class UsuariosModulosSeeder extends Seeder
       'created_at' => date('Y-m-d H:m:s'),
       'updated_at' => date('Y-m-d H:m:s'),
     ]);
-    /* DB::table('usuarios_modulos')->insert([
+    DB::table('usuarios_modulos')->insert([
       'fk_modulo' => 3,
       'fk_usuario' => 1,
       'fk_creador' => 1,
@@ -37,6 +37,6 @@ class UsuariosModulosSeeder extends Seeder
       'fk_creador' => 1,
       'created_at' => date('Y-m-d H:m:s'),
       'updated_at' => date('Y-m-d H:m:s'),
-    ]); */
+    ]);
   }
 }

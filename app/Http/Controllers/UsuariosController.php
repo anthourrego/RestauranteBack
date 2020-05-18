@@ -230,4 +230,38 @@ class UsuariosController extends Controller
     }
     return $resp; 
   }
+
+  public function clienteRegistrados(){
+    $usuarios = Usuarios::where([
+                          ['estado', 1],
+                          ['fk_perfil', 2]
+                        ])->get();
+
+    if (!$usuarios->isEmpty()) {
+      $resp["success"] = true;
+      $resp["msj"] = $usuarios;
+    }else{
+      $resp["success"] = false;
+      $resp["msj"] = "No hay datos";
+    }
+    
+    return $resp;
+  }
+
+  public function usuariosRegistrados(){
+    $usuarios = Usuarios::where([
+                          ['estado', 1],
+                          ['fk_perfil', 1]
+                        ])->get();
+
+    if (!$usuarios->isEmpty()) {
+      $resp["success"] = true;
+      $resp["msj"] = $usuarios;
+    }else{
+      $resp["success"] = false;
+      $resp["msj"] = "No hay datos";
+    }
+    
+    return $resp;
+  }
 }

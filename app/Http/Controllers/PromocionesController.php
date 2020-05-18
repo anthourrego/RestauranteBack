@@ -83,17 +83,13 @@ class PromocionesController extends Controller
   {
     $promo = DB::table('promociones')
                 ->join('platos', 'promociones.fk_plato', '=', 'platos.id')
-                ->select('promociones.*', 'platos.nombre AS nombre_plato', 'platos.imagen AS imagen', 'platos.descripcion AS plato_descripcion')
+                ->select('promociones.*', 'platos.nombre AS nombre', 'platos.imagen AS imagen', 'platos.descripcion AS plato_descripcion')
                 ->where([
                   ['promociones.estado', 1],
                   ['platos.estado', 1],
                   ['promociones.id', '<>', 1]
                 ])
                 ->get();
-    /* $promo = Promociones::where([
-                            ['estado', 1],
-                            ['id', '<>', 1]
-                          ])->get(); */
 
     if (!$promo->isEmpty()) {
       $resp["success"] = true;
