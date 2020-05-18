@@ -104,7 +104,32 @@ class PlatosController extends Controller
      */
     public function update(Request $request, Platos $platos)
     {
-        //
+        $validar = Platos::where([['id', '<>', $request->idPlato],['nombre', $request->nombre]])->get();
+        if ($validar->isEmpty()) {
+            $plato = Platos::find($request->idPlato);
+            if(!empty($plato)){
+                if ($request->nombre != $plato->nombre || $request->descripcion != $plato->descripcion || $request->precio) {
+                    $plato->nombre = $request->nombre;
+                    $plato->descripcion = $request->descripcion;
+                    $plato->precio = $request->precio;
+                    if ($plato->save()) {
+                        $resp["success"] = true;
+                        $resp["msj"] = "Se han actualizado los datos";
+                        return $resp;
+                    } else {
+                        $resp["msj"] = "No se han guardado cambios";
+                    }
+                } else {
+                    $resp["msj"] = "Por favor realice algún cambio";
+                }
+            } else {
+                $resp["msj"] = "No se ha encontrado el plato";
+            }
+        } else {
+            $resp["msj"] = "El nombre ya esta en uso.";
+        }
+        $resp["success"] = false;
+        return $resp;
     }
 
     /**

@@ -46,5 +46,6 @@ Route::middleware('token')->group(function () {
   //Platos
   Route::post('platos/guardar', 'PlatosController@store');
   Route::get('platos/lista', 'PlatosController@show');
+  Route::post('platos/editar', 'PlatosController@update');
 
 });
