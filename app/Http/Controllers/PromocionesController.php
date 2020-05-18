@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Promociones;
 use App\Platos;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PromocionesController extends Controller
 {
@@ -20,7 +21,7 @@ class PromocionesController extends Controller
    */
   public function index()
   {
-      //
+    
   }
 
   /**
@@ -80,7 +81,28 @@ class PromocionesController extends Controller
    */
   public function show(Promociones $promociones)
   {
-      //
+    $promo = DB::table('promociones')
+                ->join('platos', 'promociones.fk_plato', '=', 'platos.id')
+                ->select('promociones.*', 'platos.nombre AS nombre_plato', 'platos.imagen AS imagen', 'platos.descripcion AS plato_descripcion')
+                ->where([
+                  ['promociones.estado', 1],
+                  ['platos.estado', 1],
+                  ['promociones.id', '<>', 1]
+                ])
+                ->get();
+    /* $promo = Promociones::where([
+                            ['estado', 1],
+                            ['id', '<>', 1]
+                          ])->get(); */
+
+    if (!$promo->isEmpty()) {
+      $resp["success"] = true;
+      $resp["msj"] = $promo;
+    }else{
+      $resp["success"] = false;
+      $resp["msj"] = "No hay datos";
+    }
+    return $resp;
   }
 
   /**

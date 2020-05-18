@@ -27,6 +27,7 @@ Route::middleware(['guest'])->group(function () {
   Route::post('registrarse', 'UsuariosController@registrarse');
   Route::get('platos/lista', 'PlatosController@show');
   Route::get('platos/dia', 'PlatosController@platosDia');
+  Route::get('promo/lista', 'PromocionesController@show');
 });
 
 Route::middleware('token')->group(function () {
