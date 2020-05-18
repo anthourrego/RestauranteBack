@@ -48,6 +48,7 @@ class PlatosController extends Controller
       $plato->descripcion = $request->descripcion;
       $plato->imagen = '';
       $plato->estado = 1;
+      $plato->promocion = 0;
       $plato->plato_dia = 0;
       $plato->precio = $request->precio;
       $plato->fk_creador = $request->creador;
@@ -112,6 +113,7 @@ class PlatosController extends Controller
   */
   public function update(Request $request, Platos $platos)
   {
+    $resp["success"] = false;
     $validar = Platos::where([['id', '<>', $request->idPlato],['nombre', $request->nombre]])->get();
     if ($validar->isEmpty()) {
       $plato = Platos::find($request->idPlato);
@@ -135,7 +137,7 @@ class PlatosController extends Controller
     } else {
       $resp["msj"] = "El nombre ya esta en uso.";
     }
-    $resp["success"] = false;
+    
     return $resp;
   }
 

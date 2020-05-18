@@ -53,5 +53,6 @@ Route::middleware('token')->group(function () {
 
   //Promociones
   Route::post('promo/crear', 'PromocionesController@create');
+  Route::put('promo/quitar', 'PromocionesController@update');
 
 });
