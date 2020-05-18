@@ -117,4 +117,24 @@ class PlatosController extends Controller
     {
         //
     }
+
+    public function eliminar(Request $request){
+        $plato = Platos::find($request->id);
+    
+        if(!is_null($plato)){
+        $plato->estado = 0;
+
+        if ($plato->save()) {
+            $resp["success"] = true;
+            $resp["msj"] = "Se ha eliminado el plato";
+        }else{
+            $resp["success"] = false;
+            $resp["msj"] = "No se han guardado cambios";
+        }
+        }else{
+        $resp["success"] = false;
+        $resp["msj"] = "No se ha encontrado el plato";
+        }
+        return $resp; 
+    }
 }
