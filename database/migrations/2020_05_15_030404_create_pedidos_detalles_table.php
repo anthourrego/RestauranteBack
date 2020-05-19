@@ -19,6 +19,7 @@ class CreatePedidosDetallesTable extends Migration
             $table->unsignedBigInteger('fk_plato');
             $table->unsignedBigInteger('fk_promocion');
             $table->integer('precio');
+            $table->integer('cantidad');
             $table->integer('estado');
             $table->timestamps();
             

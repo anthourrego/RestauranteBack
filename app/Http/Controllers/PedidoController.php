@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Pedido;
+use App\PedidosDetalles;
 use Illuminate\Http\Request;
 
 class PedidoController extends Controller
@@ -86,5 +87,52 @@ class PedidoController extends Controller
   public function destroy(Pedido $pedido)
   {
       //
+  }
+
+  public function realizarPedido(Request $request)
+  {
+    $resp["success"] = false;
+
+    $pedido = new Pedido();
+    $pedido->nro_documento = $request->nro_documento;
+    $pedido->nombre_completo = $request->nombres . ' ' . $request->apellidos;
+    $pedido->direccion = $request->direccion;
+    $pedido->telefono = $request->telefono;
+    $pedido->total = $request->total;
+    $pedido->estado = 1;
+
+    if ($pedido->save()) {
+      $contPerdidoDetalle = 0;
+      $pedidoDetalle = new PedidosDetalles();
+      for ($i=0; $i < count($request->listaProductos); $i++) { 
+        $pedidoDetalle = new PedidosDetalles();
+        if (isset($request->listaProductos[$i]->fk_plato)) {
+          $pedidoDetalle->fk_plato = 1;
+          $pedidoDetalle->fk_promocion = $request->listaProductos[$i]['id'];
+        }else{
+          $pedidoDetalle->fk_plato = $request->listaProductos[$i]['id'];
+          $pedidoDetalle->fk_promocion = 1;
+        }
+        $pedidoDetalle->fk_pedido = 13;
+        $pedidoDetalle->cantidad = $request->listaProductos[$i]['cantidad'];
+        $pedidoDetalle->precio = $request->listaProductos[$i]['precio'];
+        $pedidoDetalle->estado = 1;
+
+        if ($pedidoDetalle->save()) {
+          $contPerdidoDetalle++;
+        }
+        
+      }
+      if ($contPerdidoDetalle == count($request->listaProductos)) {
+        $resp["success"] = true;
+        $resp["msj"] = "Se ha realizado su pedido";
+      }else{
+        $resp["msj"] = "No ha realizado su pedido";
+      }
+    } else {
+      $resp["msj"] = "No se han guardado cambios";
+    }
+
+    return $resp;
   }
 }
