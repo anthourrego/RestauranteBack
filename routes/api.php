@@ -61,4 +61,7 @@ Route::middleware('token')->group(function () {
   Route::post('promo/crear', 'PromocionesController@create');
   Route::put('promo/quitar', 'PromocionesController@update');
 
+  //Pedidos
+  Route::get('pedidos/lista', 'PedidoController@listaPedidos');
+
 });

@@ -135,4 +135,17 @@ class PedidoController extends Controller
 
     return $resp;
   }
+
+  public function listaPedidos(){
+    $pedidos = Pedido::where('estado', 1)->get();
+
+    if (!$pedidos->isEmpty()) {
+      $resp["success"] = true;
+      $resp["msj"] = $pedidos;
+    }else{
+      $resp["success"] = false;
+      $resp["msj"] = "No hay datos";
+    }
+    return $resp;
+  }
 }
