@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Usuarios;
 use App\Modulos;
+use App\UsuariosModulos;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Helpers\JwtLogin;
@@ -265,22 +266,68 @@ class UsuariosController extends Controller
     return $resp;
   }
 
-  public function listaPermisos(){
+  public function listaPermisos($idUsuario){
     $resp["success"] = false;
-
     $modulos = Modulos::where([
                           ['estado', 1],
                         ])->get();
 
     if (!$modulos->isEmpty()) {
       for ($i=0; $i < count($modulos); $i++) { 
-        
-        $modulos[$i]->check = 1;
+        $modulosUsuarios = UsuariosModulos::where([
+                                              ['estado', 1],
+                                              ['fk_usuario', $idUsuario],
+                                              ['fk_modulo', $modulos[$i]->id]
+                                            ])->get();
+        if (!$modulosUsuarios->isEmpty()) {
+          $modulos[$i]->check = 1;
+        }else{
+          $modulos[$i]->check = 0;
+        }
       }
       $resp["success"] = true;
       $resp["msj"] = $modulos;
     }else{
       $resp["msj"] = "No hay datos";
+    }
+
+    return $resp;
+  }
+
+  public function actualizarPermiso(Request $request){
+    $resp['success'] = false;
+    $modulosUsuarios = UsuariosModulos::where([
+                                        ['fk_usuario', $request->usuario],
+                                        ['fk_modulo', $request->modulo]
+                                      ])->first();
+    
+    if (!is_null($modulosUsuarios)) {
+      if ($modulosUsuarios->estado == 1) {
+        $modulosUsuarios->estado = 0;
+      }else{
+        $modulosUsuarios->estado = 1;
+      }
+
+      if ($modulosUsuarios->save()) {
+        $resp['success'] = true;
+        $resp['msj'] = 'Se ha actualizado correctamente';
+      } else {
+        $resp['msj'] = 'No se ha actualizado';
+      }  
+    }else{
+      $permiso = new UsuariosModulos();
+      $permiso->fk_modulo = $request->modulo;
+      $permiso->fk_usuario = $request->usuario;
+      $permiso->fk_creador = 1;
+      $permiso->estado = 1;
+
+      if ($permiso->save()) {
+        $resp['success'] = true;
+        $resp['msj'] = 'Se ha actualizado correctamente';
+      } else {
+        $resp['msj'] = 'No se ha actualizado';
+      }
+      
     }
 
     return $resp;

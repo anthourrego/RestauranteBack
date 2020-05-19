@@ -43,7 +43,8 @@ Route::middleware('token')->group(function () {
   Route::put('usuarios/editar', 'UsuariosController@editarUsuario');
   Route::get('usuarios/lista/clientes', 'UsuariosController@clienteRegistrados');
   Route::get('usuarios/lista/usuarios', 'UsuariosController@usuariosRegistrados');
-  Route::get('usuarios/lista/permisos', 'UsuariosController@listaPermisos');
+  Route::get('usuarios/lista/permisos/{idUsuario}', 'UsuariosController@listaPermisos');
+  Route::post('usuarios/actualizar/permiso', 'UsuariosController@actualizarPermiso');
   
   //Modulos
   Route::get('listaModulosUsuario/{idUsuario}', 'ModulosController@listaModulosUsuario');
