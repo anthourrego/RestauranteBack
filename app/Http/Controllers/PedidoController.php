@@ -113,7 +113,7 @@ class PedidoController extends Controller
           $pedidoDetalle->fk_plato = $request->listaProductos[$i]['id'];
           $pedidoDetalle->fk_promocion = 1;
         }
-        $pedidoDetalle->fk_pedido = 13;
+        $pedidoDetalle->fk_pedido = $pedido->id;
         $pedidoDetalle->cantidad = $request->listaProductos[$i]['cantidad'];
         $pedidoDetalle->precio = $request->listaProductos[$i]['precio'];
         $pedidoDetalle->estado = 1;

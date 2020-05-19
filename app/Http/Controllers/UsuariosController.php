@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Usuarios;
+use App\Modulos;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Helpers\JwtLogin;
-use App\Helpers\SSP;
 use Illuminate\Support\Collection as Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -262,6 +262,27 @@ class UsuariosController extends Controller
       $resp["msj"] = "No hay datos";
     }
     
+    return $resp;
+  }
+
+  public function listaPermisos(){
+    $resp["success"] = false;
+
+    $modulos = Modulos::where([
+                          ['estado', 1],
+                        ])->get();
+
+    if (!$modulos->isEmpty()) {
+      for ($i=0; $i < count($modulos); $i++) { 
+        
+        $modulos[$i]->check = 1;
+      }
+      $resp["success"] = true;
+      $resp["msj"] = $modulos;
+    }else{
+      $resp["msj"] = "No hay datos";
+    }
+
     return $resp;
   }
 }
