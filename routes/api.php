@@ -64,5 +64,7 @@ Route::middleware('token')->group(function () {
 
   //Pedidos
   Route::get('pedidos/lista', 'PedidoController@listaPedidos');
+  Route::get('pedidos/detalle/{idPedido}', 'PedidoController@detallePedido');
+  Route::put('pedidos/completo', 'PedidoController@cambiarEstadoPedido');
 
 });

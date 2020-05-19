@@ -148,4 +148,44 @@ class PedidoController extends Controller
     }
     return $resp;
   }
+
+  public function detallePedido($idPedido){
+    $detalles = PedidosDetalles::where('fk_pedido', $idPedido)
+      ->join('platos', 'fk_plato', '=', 'platos.id')
+      ->get();
+    if (!$detalles->isEmpty()) {
+      $resp["success"] = true;
+      $resp["msj"] = $detalles;
+    }else{
+      $resp["success"] = false;
+      $resp["msj"] = "No hay datos";
+    }
+    return $resp;
+  }
+
+  public function cambiarEstadoPedido(Request $request){
+    $detalles = PedidosDetalles::where('fk_pedido', $request->pedido)->get();
+    if (!$detalles->isEmpty()) {
+      $total = 0;
+      for ($i=0; $i < count($detalles) ; $i++) { 
+        $detalles[$i]->estado = 0;
+        if ($detalles[$i]->save()) {
+          $total = $total + 1;
+        }
+      }
+      if (count($detalles) === $total) {
+        $pedido = Pedido::where('id', $request->pedido)->update(['estado' => 0]);
+        $resp["success"] = true;
+        $resp["msj"] = "Pedido completado.";
+      } else {
+        $resp["success"] = false;
+        $resp["msj"] = "Se completaron " . $total . " pedidos.";
+      }
+    } else {
+      $resp["success"] = false;
+      $resp["msj"] = "No existe pedido.";
+    }
+    return $resp;
+  }
+
 }
