@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 class UsuariosController extends Controller
 {
   /**
-   * Instantiate a new UserController instance.
+   * Instantiate a new UserController instance.a
    */
   public function __construct()
   {
